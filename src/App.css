@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+
+.app {
+  text-align: center;
+}
+
+.app-header {
+  background-color: white;
+}
+
+.movie-card {
+  width: 250px;        
+  margin: 0 auto;  /* Центрування всередині колонки */
+  transition: 0.3s;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 350px;        /* Фіксована висота для всіх постерів */
+  object-fit: cover;    /* Щоб фото не сплющувалось */
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.custom-booking-btn {
+  width: 200px;
+  height: 40px;
+  padding: 8px;   
+  font-size: 0.8rem; 
+  line-height: 1.8;    /* Контролює висоту рядка тексту */
+}
