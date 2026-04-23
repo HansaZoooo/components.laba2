@@ -27,7 +27,6 @@ const Menu = () => {
       <Container>
         <Navbar.Brand href="#">CinemaBooking</Navbar.Brand>
         <Navbar.Toggle />
-
         <Navbar.Collapse className="justify-content-end">
           <Nav className="me-auto">
             <Nav.Link href="#">Головна</Nav.Link>

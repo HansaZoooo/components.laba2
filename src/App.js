@@ -16,7 +16,7 @@ function App() {
           Вітаємо у системі бронювання кіно!
         </Alert>
 
-        <Row className="justify-content-center g-4">
+        <Row className="justify-content-center">
           <Col md="auto">
             <MovieCard
               title="Avatar"
