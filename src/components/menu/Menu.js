@@ -21,19 +21,38 @@
 
 import { Navbar, Nav, Container } from "react-bootstrap";
 
-//приймаємо функцію як props
+// приймаємо функцію як props
 const Menu = ({ onNavigate }) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#">CinemaBooking</Navbar.Brand>
+
+        <Navbar.Brand onClick={() => onNavigate("home")}>
+          CinemaBooking
+        </Navbar.Brand>
+
         <Navbar.Toggle />
+
         <Navbar.Collapse className="justify-content-end">
 
           <Nav className="me-auto">
-            <Nav.Link onClick={() => onNavigate("home")}>Головна</Nav.Link>
-            <Nav.Link onClick={() => onNavigate("movies")}>Фільми</Nav.Link>
-            <Nav.Link onClick={() => onNavigate("contacts")}>Контакти</Nav.Link>
+
+            <Nav.Link onClick={() => onNavigate("home")}>
+              Головна
+            </Nav.Link>
+
+            <Nav.Link onClick={() => onNavigate("movies")}>
+              Фільми
+            </Nav.Link>
+
+            <Nav.Link onClick={() => onNavigate("watchlist")}>
+              Список бажаного
+            </Nav.Link>
+
+            <Nav.Link onClick={() => onNavigate("contacts")}>
+              Контакти
+            </Nav.Link>
+
           </Nav>
 
           <Navbar.Text>
@@ -41,6 +60,7 @@ const Menu = ({ onNavigate }) => {
           </Navbar.Text>
 
         </Navbar.Collapse>
+
       </Container>
     </Navbar>
   );

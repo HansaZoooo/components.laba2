@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './App.css';
 import { Container, Row, Col, Alert } from "react-bootstrap";
 
@@ -7,6 +7,7 @@ import MovieCard from "./components/movieCard/MovieCard";
 import BookingModal from "./components/bookingModal/BookingModal";
 import Contacts from "./components/contacts/Contacts";
 import MoviesPage from "./components/moviesPage/MoviesPage";
+import WatchlistPage from "./components/watchlistPage/WatchlistPage";
 
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
@@ -21,9 +22,28 @@ const movies = [
 
 function App() {
 
-  //яка сторінка зараз
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(() => {
+    return localStorage.getItem("currentPage") || "home";
+  });
 
+  useEffect(() => {
+    localStorage.setItem("currentPage", page);
+  }, [page]);
+  
+  //localstorage
+  const [watchlist, setWatchlist] = useState(() => {
+  const saved = localStorage.getItem("watchlist");
+  return saved ? JSON.parse(saved) : [];
+  });
+
+
+  useEffect(() => {
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      }, 
+    [watchlist]
+  );
+  
+  
   //обробник навігації
   const handleNavigate = (pageName) => {
     setPage(pageName);
@@ -32,6 +52,16 @@ function App() {
   const handleBooking = (title) => {
     alert("Ви обрали фільм: " + title);
   };
+  
+  const removeFromWatchlist = (index) => {
+    const newList = [...watchlist];
+    newList.splice(index, 1);
+    setWatchlist(newList);
+  };
+
+  const addToWatchlist = (movie) => {
+  setWatchlist([...watchlist, movie]);
+};
 
  return (
   <>
@@ -47,7 +77,10 @@ function App() {
           <Row className="justify-content-center">
             {movies.map((movie, index) => (
               <Col md="auto" key={index}>
-                <MovieCard {...movie} onBook={handleBooking} />
+                <MovieCard   {...movie}
+                  onBook={handleBooking}
+                  onAddFavorite={addToWatchlist}
+                />
               </Col>
             ))}
           </Row>
@@ -62,6 +95,13 @@ function App() {
         <MoviesPage movies={movies} />
       )}
 
+      {page === "watchlist" && (
+        <WatchlistPage
+        items={watchlist}
+        onRemove={removeFromWatchlist}
+        />
+      )}
+
       {page === "contacts" && (
         <Contacts
           phone="+380991562666"
@@ -69,6 +109,7 @@ function App() {
           address="м. Івано-Франківськ"
         />
       )}
+      
 
     </Container>
   </>
