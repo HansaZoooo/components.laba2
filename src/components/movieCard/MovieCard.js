@@ -1,17 +1,23 @@
 import { Card, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 
-const MovieCard = ({ title, img }) => {
+const MovieCard = ({ title, img, onBook }) => {
+
   const [showAlert, setShowAlert] = useState(false);
 
   const handleBooking = () => {
-    setShowAlert(true);
-    
-    // Автоматично приховуємо алерт через 4 секунди
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 4000);
+
+    // setShowAlert(true);
+
+    // setTimeout(() => {
+    //   setShowAlert(false);
+    // }, 4000);
+
+    if (onBook) {
+      onBook(title);
+    }
   };
+
 
   return (
     <>
