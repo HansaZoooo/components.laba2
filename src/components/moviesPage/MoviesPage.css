@@ -1,0 +1,28 @@
+.movies-container {
+  justify-content: center;
+}
+
+.movie-card-custom {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.movie-card-custom.selected {
+  border: 2px solid green;
+}
+
+.movie-img {
+  height: 200px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+.movie-title {
+  font-size: 16px;
+}
+
+.movie-btn {
+  width: 100%;
+  margin-top: 10px;
+}
