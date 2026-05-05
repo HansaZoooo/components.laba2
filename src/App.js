@@ -7,6 +7,7 @@ import MovieCard from "./components/movieCard/MovieCard";
 import BookingModal from "./components/bookingModal/BookingModal";
 import Contacts from "./components/contacts/Contacts";
 import MoviesPage from "./components/moviesPage/MoviesPage";
+import MoviesPageCard from "./components/moviesPageCard/MoviePageCard";
 
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
