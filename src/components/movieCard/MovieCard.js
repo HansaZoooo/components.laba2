@@ -1,28 +1,33 @@
 import { Card, Button, Alert } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const MovieCard = ({ title, img, onBook, onAddFavorite }) => {
-
+const MovieCard = ({ title, img, onBook, watchlist, onToggleFavorite }) => {
   const [showAlert, setShowAlert] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    const found = watchlist?.find(item => item.title === title);
+    setLiked(!!found);
+  }, [watchlist, title]);
 
   const handleBooking = () => {
     if (onBook) {
       onBook(title);
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     }
   };
 
-  const handleAddFavorite = () => {
-    if (onAddFavorite) {
-      onAddFavorite({ title, img });
+  const handleLike = () => {
+    if (onToggleFavorite) {
+      onToggleFavorite({ title, img });
     }
   };
 
   return (
     <>
       <Card className="movie-card">
-
         <Card.Img variant="top" src={img} />
-
         <Card.Body>
           <Card.Title>{title}</Card.Title>
 
@@ -30,13 +35,16 @@ const MovieCard = ({ title, img, onBook, onAddFavorite }) => {
             Забронювати
           </Button>
 
-          <Button
-            variant="warning"
-            className="mt-2"
-            onClick={handleAddFavorite}
+          <span
+            onClick={handleLike}
+            style={{
+              cursor: "pointer",
+              fontSize: "24px",
+              marginLeft: "10px"
+            }}
           >
-            В обране
-          </Button>
+            {liked ? "❤️" : "🤍"}
+          </span>
 
         </Card.Body>
       </Card>

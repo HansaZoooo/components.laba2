@@ -15,9 +15,9 @@ import interstellarImg from "./assets/interstellar.jpg";
 
 //масив фільмів
 const movies = [
-  { id: 1, title: "Avatar", img: avatarImg },
-  { id: 2, title: "Inception", img: inceptionImg },
-  { id: 3, title: "Interstellar", img: interstellarImg }
+  { id: 1, title: "Avatar", img: avatarImg, date: "2026-05-01" },
+  { id: 2, title: "Inception", img: inceptionImg, date: "2026-04-15"},
+  { id: 3, title: "Interstellar", img: interstellarImg, date: "2026-05-10"}
 ];
 
 function App() {
@@ -42,8 +42,9 @@ function App() {
       }, 
     [watchlist]
   );
-  
-  
+
+  const [sortOrder, setSortOrder] = useState("new");
+
   //обробник навігації
   const handleNavigate = (pageName) => {
     setPage(pageName);
@@ -63,6 +64,29 @@ function App() {
   setWatchlist([...watchlist, movie]);
 };
 
+const toggleFavorite = (movie) => {
+  const exists = watchlist.find(item => item.title === movie.title);
+
+  let updated;
+
+  if (exists) {
+    updated = watchlist.filter(item => item.title !== movie.title);
+  } else {
+    updated = [...watchlist, movie];
+  }
+
+  setWatchlist(updated);
+  localStorage.setItem("watchlist", JSON.stringify(updated));
+};
+
+const sortedMovies = [...movies].sort((a, b) => {
+  if (sortOrder === "new") {
+    return new Date(b.date) - new Date(a.date);
+  } else {
+    return new Date(a.date) - new Date(b.date);
+  }
+});
+
  return (
   <>
     <Menu onNavigate={handleNavigate} />
@@ -74,13 +98,32 @@ function App() {
             Вітаємо у системі бронювання кіно!
           </Alert>
 
+      <div className="d-flex justify-content-end align-items-center">
+  
+      <span className="me-2 fw-bold">
+        Відсортувати за:
+      </span>
+
+      <select
+        className="form-select w-auto"
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+      >
+        <option value="new">Новизною</option>
+        <option value="old">Старизною</option>
+      </select>
+
+</div>
+      
           <Row className="justify-content-center">
-            {movies.map((movie, index) => (
+            {sortedMovies.map((movie, index) => (
               <Col md="auto" key={index}>
-                <MovieCard   {...movie}
-                  onBook={handleBooking}
-                  onAddFavorite={addToWatchlist}
-                />
+              <MovieCard
+                {...movie}
+                onBook={handleBooking}
+                watchlist={watchlist}
+                onToggleFavorite={toggleFavorite}
+              />    
               </Col>
             ))}
           </Row>
