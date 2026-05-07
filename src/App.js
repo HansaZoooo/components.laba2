@@ -8,6 +8,7 @@ import BookingModal from "./components/bookingModal/BookingModal";
 import Contacts from "./components/contacts/Contacts";
 import MoviesPage from "./components/moviesPage/MoviesPage";
 import WatchlistPage from "./components/watchlistPage/WatchlistPage";
+import SeatPicker from "./components/seatPicker/SeatPicker";
 
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
@@ -45,6 +46,9 @@ function App() {
 
   const [sortOrder, setSortOrder] = useState("new");
 
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showSeats, setShowSeats] = useState(false);
+
   //обробник навігації
   const handleNavigate = (pageName) => {
     setPage(pageName);
@@ -64,28 +68,36 @@ function App() {
   setWatchlist([...watchlist, movie]);
 };
 
-const toggleFavorite = (movie) => {
-  const exists = watchlist.find(item => item.title === movie.title);
+  const toggleFavorite = (movie) => {
+    const exists = watchlist.find(item => item.title === movie.title);
 
-  let updated;
+    let updated;
 
-  if (exists) {
-    updated = watchlist.filter(item => item.title !== movie.title);
-  } else {
-    updated = [...watchlist, movie];
-  }
+    if (exists) {
+      updated = watchlist.filter(item => item.title !== movie.title);
+    } else {
+      updated = [...watchlist, movie];
+    }
 
-  setWatchlist(updated);
-  localStorage.setItem("watchlist", JSON.stringify(updated));
-};
+    setWatchlist(updated);
+    localStorage.setItem("watchlist", JSON.stringify(updated));
+  };
 
-const sortedMovies = [...movies].sort((a, b) => {
-  if (sortOrder === "new") {
-    return new Date(b.date) - new Date(a.date);
-  } else {
-    return new Date(a.date) - new Date(b.date);
-  }
-});
+  const sortedMovies = [...movies].sort((a, b) => {
+    if (sortOrder === "new") {
+      return new Date(b.date) - new Date(a.date);
+    } else {
+      return new Date(a.date) - new Date(b.date);
+    }
+  });
+
+  const handleSeatBook = (seats) => {
+    alert(
+      `Ви забронювали місця ${seats.join(", ")} на фільм ${selectedMovie}`
+    );
+
+    setShowSeats(false);
+  };
 
  return (
   <>
@@ -118,14 +130,28 @@ const sortedMovies = [...movies].sort((a, b) => {
           <Row className="justify-content-center">
             {sortedMovies.map((movie, index) => (
               <Col md="auto" key={index}>
-              <MovieCard
+             <MovieCard
                 {...movie}
-                onBook={handleBooking}
+                onBook={(title) => {
+                setSelectedMovie(title);
+                setShowSeats(true);
+                }}
                 watchlist={watchlist}
                 onToggleFavorite={toggleFavorite}
-              />    
+              />
               </Col>
             ))}
+
+            {showSeats && (
+              <div className="mt-4 p-3 border">
+
+                <h5>Фільм: {selectedMovie}</h5>
+
+                <SeatPicker onBook={handleSeatBook} />
+
+              </div>
+            )}
+            
           </Row>
 
           <div className="mt-4">

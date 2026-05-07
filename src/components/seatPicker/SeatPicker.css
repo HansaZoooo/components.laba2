@@ -1,0 +1,59 @@
+.cinema-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.screen {
+  width: 60%;
+  margin: 0 auto 30px;
+  background: #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.hall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.seat-row {
+  display: flex;
+  gap: 8px;
+}
+
+.seat {
+  width: 35px;
+  height: 35px;
+  background-color: #6c757d;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 0.2s;
+}
+
+.seat:hover {
+  transform: scale(1.1);
+}
+
+.selected {
+  background-color: #28a745;
+}
+
+.selected-info {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.booked {
+  background-color: red;
+  cursor: not-allowed;
+}

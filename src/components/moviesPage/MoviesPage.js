@@ -1,4 +1,5 @@
 import "./MoviesPage.css";
+import SeatPicker from "../seatPicker/SeatPicker";
 
 import { Row, Col, Card, Button, Form, Badge } from "react-bootstrap";
 import { useState } from "react";
@@ -8,6 +9,9 @@ const MoviesPage = (props) => {
 
   const [tickets, setTickets] = useState({});
   const [selectedId, setSelectedId] = useState(null); 
+  const [selectedMovie, setSelectedMovie] = useState("");
+  const [showSeats, setShowSeats] = useState(false);
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
 
   const handleChange = (id, value) => {
     setTickets({
@@ -17,8 +21,17 @@ const MoviesPage = (props) => {
   };
 
   const handleBooking = (movie) => {
-    const count = tickets[movie.id] || 0;
-    alert(`Ви забронювали ${count} квитків на ${movie.title}`);
+    setSelectedMovie(movie.title);
+    setSelectedMovieId(movie.id);
+    setShowSeats(true);
+  };
+  
+  const handleSeatBook = (seats) => {
+    alert(
+      `Ви забронювали місця ${seats.join(", ")} на ${selectedMovie}`
+    );
+
+    setShowSeats(false);
   };
 
   return (
@@ -76,6 +89,20 @@ const MoviesPage = (props) => {
     </Col>
     ))}
     </Row>
+
+    {showSeats && (
+      <div className="mt-4 p-4 border rounded text-center">
+
+        <h4 className="mb-3">
+          Фільм: {selectedMovie}
+        </h4>
+
+        <SeatPicker
+          onBook={handleSeatBook}
+          maxSeats={tickets[selectedMovieId] || 1}
+        />
+      </div>
+    )}
     </>
   );
 };
