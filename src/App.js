@@ -4,7 +4,6 @@ import { Container, Row, Col, Alert, Modal, Button} from "react-bootstrap";
 
 import Menu from "./components/menu/Menu";
 import MovieCard from "./components/movieCard/MovieCard";
-import BookingModal from "./components/bookingModal/BookingModal";
 import Contacts from "./components/contacts/Contacts";
 import MoviesPage from "./components/moviesPage/MoviesPage";
 import WatchlistPage from "./components/watchlistPage/WatchlistPage";
@@ -21,54 +20,54 @@ const movies = [
     title: "Avatar",
     img: avatarImg,
     rating: 8.5,
+    price: 220,
     date: "2026-05-01",
-    description:
-      "Епічна науково-фантастична історія про планету Пандора, де людство намагається добути цінні ресурси, вступаючи в конфлікт із корінним народом На’ві. Фільм поєднує технологічний прогрес, природу та питання виживання цивілізацій."
+    description: "Епічна науково-фантастична історія про планету Пандора, де людство намагається добути цінні ресурси, вступаючи в конфлікт із корінним народом На’ві. Фільм поєднує технологічний прогрес, природу та питання виживання цивілізацій."
   },
   {
     id: 2,
     title: "Inception",
     img: inceptionImg,
     rating: 9.1,
+    price: 250,
     date: "2026-04-15",
-    description:
-      "Інтелектуальний трилер про крадіжку ідей через проникнення у сни. Команда спеціалістів занурюється у багаторівневу структуру підсвідомості, де межа між реальністю та сном поступово зникає."
+    description: "Інтелектуальний трилер про крадіжку ідей через проникнення у сни. Команда спеціалістів занурюється у багаторівневу структуру підсвідомості, де межа між реальністю та сном поступово зникає."
   },
   {
     id: 3,
     title: "Interstellar",
     img: interstellarImg,
     rating: 9.3,
+    price: 270,
     date: "2026-05-10",
-    description:
-      "Космічна одіссея про подорож крізь червоточину для пошуку нового дому для людства. Фільм досліджує теми часу, гравітації, любові та виживання цивілізації."
+    description: "Космічна одіссея про подорож крізь червоточину для пошуку нового дому для людства. Фільм досліджує теми часу, гравітації, любові та виживання цивілізації."
   },
   {
     id: 4,
     title: "Titanic",
     img: avatarImg,
     rating: 8.0,
+    price: 180,
     date: "2026-03-20",
-    description:
-      "Романтична історія на фоні трагедії легендарного лайнера Титанік. Кохання двох людей з різних соціальних світів розгортається на тлі катастрофи, яка змінює історію."
+    description: "Романтична історія на фоні трагедії легендарного лайнера Титанік. Кохання двох людей з різних соціальних світів розгортається на тлі катастрофи, яка змінює історію."
   },
   {
     id: 5,
     title: "Joker",
     img: inceptionImg,
     rating: 8.8,
+    price: 230,
     date: "2026-02-11",
-    description:
-      "Психологічна драма про становлення Джокера — людини, яку суспільство ігнорує та відштовхує. Поступова трансформація в символ хаосу та анархії."
+    description: "Психологічна драма про становлення Джокера — людини, яку суспільство ігнорує та відштовхує. Поступова трансформація в символ хаосу та анархії."
   },
   {
     id: 6,
     title: "The Batman",
     img: interstellarImg,
     rating: 8.7,
+    price: 260,
     date: "2026-01-05",
-    description:
-      "Темна історія про Бетмена на початку його кар’єри як захисника Ґотема. Він розслідує серію злочинів і стикається з корупцією та загадковими ворогами."
+    description: "Темна історія про Бетмена на початку його кар’єри як захисника Ґотема. Він розслідує серію злочинів і стикається з корупцією та загадковими ворогами."
   }
 ];
 
@@ -185,7 +184,18 @@ function App() {
       </select>
 
 </div>
-      
+
+    <div className="carousel-wrapper">
+
+      <button
+        className="arrow-btn left"
+        onClick={() =>
+          setCurrentIndex((prev) => Math.max(prev - 1, 0))
+        }
+      >
+        ❮
+      </button>
+
           <Row className="justify-content-center">
             {sortedMovies.slice(currentIndex, currentIndex + 4).map((movie, index) => (
               <Col md="auto" key={index}>
@@ -216,10 +226,18 @@ function App() {
             )}
             
           </Row>
-
-          <div className="mt-4">
-            <BookingModal />
-          </div>
+        
+        <button
+        className="arrow-btn right"
+        onClick={() =>
+          setCurrentIndex((prev) =>
+            Math.min(prev + 1, sortedMovies.length - 4)
+          )
+        }
+      >
+        ❯
+      </button>
+    </div>
         </>
       )}
 
@@ -229,7 +247,6 @@ function App() {
       Вітаємо у системі бронювання кіно!
     </Alert>
 
-    {/* 🔥 КОНТЕЙНЕР ДЛЯ СТРІЛОК + КАРТОК */}
     <div className="carousel-wrapper">
 
       <button
