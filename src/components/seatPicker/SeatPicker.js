@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./SeatPicker.css";
 
-const SeatPicker = ({ onBook, maxSeats }) => {
-    
+const SeatPicker = ({ onBook, maxSeats, movieId }) => {
+  
+    const storageKey = `bookedSeats_${movieId}`;
     const [selectedSeats, setSelectedSeats] = useState([]);
-
+    
     const [bookedSeats, setBookedSeats] = useState(() => {
-    const saved = localStorage.getItem("bookedSeats");
+    const saved = localStorage.getItem(storageKey);
 
     return saved ? JSON.parse(saved) : [];
     });
@@ -58,8 +59,8 @@ const SeatPicker = ({ onBook, maxSeats }) => {
     setBookedSeats(updatedBookedSeats);
 
     localStorage.setItem(
-        "bookedSeats",
-        JSON.stringify(updatedBookedSeats)
+      storageKey,
+      JSON.stringify(updatedBookedSeats)
     );
 
     onBook(selectedSeats);

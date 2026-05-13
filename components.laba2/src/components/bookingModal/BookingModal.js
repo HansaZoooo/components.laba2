@@ -7,7 +7,7 @@ const BookingModal = () => {
   return (
     <>
       <div className="d-flex justify-content-center">
-        <Button className="custom-booking-btn mb3" variant="primary" onClick={() => setShow(true)}>
+        <Button className="custom-booking-btn" variant="primary" onClick={() => setShow(true)}>
           Відкрити бронювання
         </Button>
       </div>

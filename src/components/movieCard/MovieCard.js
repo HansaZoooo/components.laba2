@@ -1,7 +1,7 @@
 import { Card, Button, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 
-const MovieCard = ({ title, img, onBook, watchlist, onToggleFavorite }) => {
+const MovieCard = ({ id, title, img, rating, onBook, watchlist, onShowDescription, onToggleFavorite }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -30,11 +30,20 @@ const MovieCard = ({ title, img, onBook, watchlist, onToggleFavorite }) => {
         <Card.Img variant="top" src={img} />
         <Card.Body>
           <Card.Title>{title}</Card.Title>
+          <Card.Text>
+          ⭐ Рейтинг: {rating}
+          </Card.Text>
 
           <Button variant="primary" onClick={handleBooking}>
             Забронювати
           </Button>
-
+        <Button
+          variant="info"
+          className="mt-2"
+          onClick={onShowDescription}
+        >
+          Переглянути опис
+        </Button>
           <span
             onClick={handleLike}
             style={{
