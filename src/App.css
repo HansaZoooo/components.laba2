@@ -1,5 +1,11 @@
 .App {
-  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
 }
 
 .App-logo {
@@ -115,4 +121,24 @@
 /* плавність появи карток */
 .movie-row {
   transition: all 0.4s ease;
+}
+
+.movie-card {
+  transition: 0.3s;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+footer {
+  margin-top: 80px;
+}
+
+.movie-btn {
+  width: 100%;
+  margin-top: 10px;
 }

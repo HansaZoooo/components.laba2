@@ -5,9 +5,9 @@ import { Container, Row, Col, Alert, Modal, Button} from "react-bootstrap";
 import Menu from "./components/menu/Menu";
 import MovieCard from "./components/movieCard/MovieCard";
 import Contacts from "./components/contacts/Contacts";
-import MoviesPage from "./components/moviesPage/MoviesPage";
 import WatchlistPage from "./components/watchlistPage/WatchlistPage";
 import SeatPicker from "./components/seatPicker/SeatPicker";
+import AboutCinema from "./components/aboutCinema/AboutCinema.js";
 
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
@@ -158,172 +158,136 @@ function App() {
   };
 
  return (
-  <>
-    <Menu onNavigate={handleNavigate} />
+  <div className="App d-flex flex-column min-vh-100">
+    <Menu 
+      onNavigate={handleNavigate} 
+    />
 
-    <Container className="mt-4">
-      {page === "home" && (
-        <>
-          <Alert variant="success">
-            Вітаємо у системі бронювання кіно!
-          </Alert>
-
-      <div className="d-flex justify-content-end align-items-center">
-  
-      <span className="me-2 fw-bold">
-        Відсортувати за:
-      </span>
-
-      <select
-        className="form-select w-auto"
-        value={sortOrder}
-        onChange={(e) => setSortOrder(e.target.value)}
-      >
-        <option value="new">Новизною</option>
-        <option value="old">Старизною</option>
-      </select>
-
-</div>
-
-    <div className="carousel-wrapper">
-
-      <button
-        className="arrow-btn left"
-        onClick={() =>
-          setCurrentIndex((prev) => Math.max(prev - 1, 0))
-        }
-      >
-        ❮
-      </button>
-
-          <Row className="justify-content-center">
-            {sortedMovies.slice(currentIndex, currentIndex + 4).map((movie, index) => (
-              <Col md="auto" key={index}>
-                
-            <MovieCard
-              {...movie}
-              onShowDescription={() => handleShowDescription(movie)}
-              onBook={(title) => {
-                setSelectedMovie(title);
-                setShowSeats(true);
-              }}
-              watchlist={watchlist}
-              onToggleFavorite={toggleFavorite}
-            />
-            </Col>
-            ))}
-
-            {showSeats && (
-              <div className="mt-4 p-3 border">
-
-                <h5>Фільм: {selectedMovie}</h5>
-
-                <SeatPicker
-                  onBook={handleSeatBook}
-                  movieId={selectedMovieId}
-                />
-              </div>
-            )}
-            
-          </Row>
+    <main className="flex-grow-1">
+      <Container className="mt-4">
         
-        <button
-        className="arrow-btn right"
-        onClick={() =>
-          setCurrentIndex((prev) =>
-            Math.min(prev + 1, sortedMovies.length - 4)
-          )
-        }
-      >
-        ❯
-      </button>
-    </div>
-        </>
-      )}
+        {page === "home" && (
+          <>
+            <Alert variant="success">
+              Вітаємо у системі бронювання кіно!
+            </Alert>
 
-    {page === "movies" && (
-  <>
-    <Alert variant="success">
-      Вітаємо у системі бронювання кіно!
-    </Alert>
+            <div className="d-flex justify-content-end align-items-center mb-3">
+              <span className="me-2 fw-bold">Відсортувати за:</span>
+              <select
+                className="form-select w-auto"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+              >
+                <option value="new">Новизною</option>
+                <option value="old">Старизною</option>
+              </select>
+            </div>
 
-    <div className="carousel-wrapper">
+            <div className="carousel-wrapper">
+              <button 
+                className="arrow-btn left" 
+                onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
+              >
+                ❮
+              </button>
 
-      <button
-        className="arrow-btn left"
-        onClick={() =>
-          setCurrentIndex((prev) => Math.max(prev - 1, 0))
-        }
-      >
-        ❮
-      </button>
+              <Row className="justify-content-center g-4">
+                {sortedMovies.slice(currentIndex, currentIndex + 4).map((movie) => (
+                  <Col md="auto" key={movie.id} className="mb-4">
+                    <MovieCard
+                      {...movie}
+                      onShowDescription={() => handleShowDescription(movie)}
+                      onBook={(title, id) => {
+                        setSelectedMovie(title);
+                        setSelectedMovieId(id);
+                        setShowSeats(true);
+                      }}
+                      watchlist={watchlist}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  </Col>
+                ))}
+              </Row>
 
-      <Row className="justify-content-center movie-row">
-        {sortedMovies
-          .slice(currentIndex, currentIndex + 4)
-          .map((movie, index) => (
-            <Col md="auto" key={index}>
-              <MovieCard {...movie} />
-            </Col>
-          ))}
-      </Row>
+              <button 
+                className="arrow-btn right" 
+                onClick={() => setCurrentIndex(prev => Math.min(prev + 1, sortedMovies.length - 4))}
+              >
+                ❯
+              </button>
+            </div>
+          </>
+        )}
 
-      <button
-        className="arrow-btn right"
-        onClick={() =>
-          setCurrentIndex((prev) =>
-            Math.min(prev + 1, sortedMovies.length - 4)
-          )
-        }
-      >
-        ❯
-      </button>
+        {page === "watchlist" && (
+          <WatchlistPage
+            items={watchlist}
+            onRemove={removeFromWatchlist}
+            onBook={(title, id) => {
+              setSelectedMovie(title);
+              setSelectedMovieId(id);
+              setShowSeats(true);
+            }}
+          />
+        )}
 
-    </div>
-  </>
-)}
+        {page === "contacts" && (
+          <Contacts
+            phone="+380991562666"
+            email="heitota@gmail.com"
+            address="м. Івано-Франківськ"
+          />
+        )}
 
-      {page === "watchlist" && (
-        <WatchlistPage
-        items={watchlist}
-        onRemove={removeFromWatchlist}
-        />
-      )}
+        {page === "about" && <AboutCinema />}
 
-      {page === "contacts" && (
-        <Contacts
-          phone="+380991562666"
-          email="heitota@gmail.com"
-          address="м. Івано-Франківськ"
-        />
-      )}
-    
-      <Modal
-        show={showDescription}
-        onHide={() => setShowDescription(false)}
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedMovieDesc?.title}</Modal.Title>
-        </Modal.Header>
+        <Modal
+          show={showDescription}
+          onHide={() => setShowDescription(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedMovieDesc?.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{selectedMovieDesc?.description}</p>
+            <strong>Рейтинг:</strong> {selectedMovieDesc?.rating}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDescription(false)}>
+              Закрити
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
-        <Modal.Body>
-          <p>{selectedMovieDesc?.description}</p>
-          <strong>Рейтинг:</strong> {selectedMovieDesc?.rating}
-        </Modal.Body>
+        <Modal 
+          show={showSeats} 
+          onHide={() => setShowSeats(false)} 
+          size="xl" 
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Бронювання квитків — {selectedMovie}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <SeatPicker 
+              onBook={handleSeatBook} 
+              movieId={selectedMovieId} 
+              maxSeats={6}
+            />
+          </Modal.Body>
+        </Modal>
 
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowDescription(false)}
-          >
-            Закрити
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      </Container>
+    </main>
 
-    </Container>
-  </>
+    <footer className="bg-dark text-light text-center p-4 mt-auto">
+      <h4>Про нас</h4>
+      <p>NeoCinema — сучасна система бронювання квитків у кінотеатр.</p>
+      <p className="mb-0">© 2026 CinemaBooking</p>
+    </footer>
+  </div>
 );
 }
 

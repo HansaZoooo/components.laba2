@@ -12,7 +12,7 @@ const MovieCard = ({ id, title, img, rating, onBook, watchlist, onShowDescriptio
 
   const handleBooking = () => {
     if (onBook) {
-      onBook(title);
+      onBook(title, id);
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 3000);
     }
@@ -20,7 +20,7 @@ const MovieCard = ({ id, title, img, rating, onBook, watchlist, onShowDescriptio
 
   const handleLike = () => {
     if (onToggleFavorite) {
-      onToggleFavorite({ title, img });
+      onToggleFavorite({ id, title, img, rating, price });
     }
   };
 
@@ -37,9 +37,14 @@ const MovieCard = ({ id, title, img, rating, onBook, watchlist, onShowDescriptio
           <Card.Text>
             💰 Ціна: {price} грн
           </Card.Text>
-          <Button variant="primary" onClick={handleBooking}>
-            Забронювати
+          
+          <Button 
+            variant="danger" 
+            onClick={() => onBook(title, id)}   // ← передаємо id
+          >
+            Купити квиток
           </Button>
+
         <Button
           variant="info"
           className="mt-2"

@@ -41,8 +41,8 @@ const Menu = ({ onNavigate }) => {
               Головна
             </Nav.Link>
 
-            <Nav.Link onClick={() => onNavigate("movies")}>
-              Фільми
+            <Nav.Link onClick={() => onNavigate("about")}>
+              Про кінотеатр
             </Nav.Link>
 
             <Nav.Link onClick={() => onNavigate("watchlist")}>
