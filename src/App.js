@@ -8,6 +8,8 @@ import Contacts from "./components/contacts/Contacts";
 import WatchlistPage from "./components/watchlistPage/WatchlistPage";
 import SeatPicker from "./components/seatPicker/SeatPicker";
 import AboutCinema from "./components/aboutCinema/AboutCinema.js";
+import AuthModal from "./components/authModal/AuthModal.js";
+import SuccessModal from "./components/successModal/SuccessModal.js";
 
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
@@ -101,6 +103,26 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [selectedMovieDesc, setSelectedMovieDesc] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState("home");
+  
+  useEffect(() => {
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const handleLoginSuccess = (user) => {
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
+  };
 
   //обробник навігації
   const handleNavigate = (pageName) => {
@@ -157,20 +179,26 @@ function App() {
     setShowDescription(true);
   };
 
- return (
+return (
   <div className="App d-flex flex-column min-vh-100">
     <Menu 
-      onNavigate={handleNavigate} 
+      currentUser={currentUser}
+      onNavigate={setCurrentPage}
+      onLoginClick={() => setShowAuthModal(true)}
+      onLogout={handleLogout}
     />
 
     <main className="flex-grow-1">
       <Container className="mt-4">
         
-        {page === "home" && (
+        {currentPage === "home" && (
           <>
-            <Alert variant="success">
-              Вітаємо у системі бронювання кіно!
-            </Alert>
+            <div style={{ paddingTop: '70px' }}> 
+              <Alert variant="success" className="mb-3">
+                Вітаємо у системі бронювання кіно!
+              </Alert>
+              {/* Решта контенту */}
+            </div>
 
             <div className="d-flex justify-content-end align-items-center mb-3">
               <span className="me-2 fw-bold">Відсортувати за:</span>
@@ -203,8 +231,6 @@ function App() {
                         setSelectedMovieId(id);
                         setShowSeats(true);
                       }}
-                      watchlist={watchlist}
-                      onToggleFavorite={toggleFavorite}
                     />
                   </Col>
                 ))}
@@ -220,19 +246,17 @@ function App() {
           </>
         )}
 
-        {page === "watchlist" && (
-          <WatchlistPage
-            items={watchlist}
-            onRemove={removeFromWatchlist}
-            onBook={(title, id) => {
-              setSelectedMovie(title);
-              setSelectedMovieId(id);
-              setShowSeats(true);
-            }}
-          />
-        )}
-
-        {page === "contacts" && (
+          {currentPage === "watchlist" && (
+            <WatchlistPage
+              movies={movies}                   
+              onBook={(title, id) => {
+                setSelectedMovie(title);
+                setSelectedMovieId(id);
+                setShowSeats(true);
+              }}
+            />
+          )}
+        {currentPage === "contacts" && (
           <Contacts
             phone="+380991562666"
             email="heitota@gmail.com"
@@ -240,8 +264,9 @@ function App() {
           />
         )}
 
-        {page === "about" && <AboutCinema />}
+        {currentPage === "about" && <AboutCinema />}
 
+        {/* Модальні вікна */}
         <Modal
           show={showDescription}
           onHide={() => setShowDescription(false)}
@@ -279,10 +304,16 @@ function App() {
           </Modal.Body>
         </Modal>
 
+        <AuthModal 
+          show={showAuthModal} 
+          onHide={() => setShowAuthModal(false)} 
+          onLoginSuccess={handleLoginSuccess} 
+        />
+
       </Container>
     </main>
 
-    <footer className="bg-dark text-light text-center p-4 mt-auto">
+    <footer className="bg-dark text-light text-center p-4 mt-5">
       <h4>Про нас</h4>
       <p>NeoCinema — сучасна система бронювання квитків у кінотеатр.</p>
       <p className="mb-0">© 2026 CinemaBooking</p>
