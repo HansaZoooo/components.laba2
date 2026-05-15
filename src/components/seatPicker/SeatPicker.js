@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import "./SeatPicker.css";
 
-const SeatPicker = ({ onBook, movieId, maxSeats = 8 }) => {
+const SeatPicker = ({ onBook, hallName, movieId, maxSeats = 8 }) => {
   const storageKey = `bookedSeats_${movieId}`;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -48,8 +48,8 @@ const SeatPicker = ({ onBook, movieId, maxSeats = 8 }) => {
 
   return (
     <div className="seat-picker">
+      {hallName && <h2 className="hall-title">{hallName}</h2>}
       <div className="screen">ЕКРАН</div>
-
       <div className="legend">
         <div className="legend-item">
           <div className="seat available"></div> <span>Вільне</span>

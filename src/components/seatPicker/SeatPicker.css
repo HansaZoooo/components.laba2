@@ -3,15 +3,26 @@
   padding: 15px 0;
 }
 
+/* Новий стиль для назви залу */
+.hall-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #374151; /* Темно-сірий, під колір тексту */
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .screen {
   background: #1f2937;
   color: white;
   padding: 12px 80px;
-  margin: 20px auto 25px;
+  margin: 0 auto 25px; /* Прибрав верхній margin, бо тепер там заголовок */
   border-radius: 6px;
   font-weight: bold;
   max-width: 520px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  text-transform: uppercase;
 }
 
 .legend {
@@ -42,7 +53,7 @@
   cursor: pointer;
   transition: all 0.15s;
   border: 1px solid #444;
-  background-color: #4ade80;
+  background-color: #4ade80; /* Вільне - зелене */
   color: #111;
 }
 
@@ -52,13 +63,13 @@
 }
 
 .seat.selected {
-  background-color: #60a5fa;
+  background-color: #60a5fa; /* Вибране - блакитне */
   border-color: #1e40af;
   color: white;
 }
 
 .seat.booked {
-  background-color: #f87171;
+  background-color: #f87171; /* Зайняте - червоне */
   border-color: #991b1b;
   color: white;
   cursor: not-allowed;
@@ -81,10 +92,14 @@
 
 .booking-info {
   margin-top: 25px;
+  padding: 20px;
+  border-top: 1px solid #eee;
 }
 
 .selected-list {
   min-height: 26px;
   color: #3b82f6;
   font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 15px;
 }

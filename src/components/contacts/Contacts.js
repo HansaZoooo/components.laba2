@@ -26,7 +26,7 @@ const Contacts = () => {
 
   return (
     <Container className="mt-5">
-      <h2 className="text-center mb-5 display-5">Зв'яжіться з нами</h2>
+      <h2 className="text-center pt-5 mt-5 mb-5 display-4">Зв'яжіться з нами</h2>
 
       <Row className="align-items-stretch g-0"> 
         <Col lg={6}>

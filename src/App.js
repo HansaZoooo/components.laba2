@@ -14,6 +14,9 @@ import SuccessModal from "./components/successModal/SuccessModal.js";
 import avatarImg from "./assets/avatar.jpg";
 import inceptionImg from "./assets/inception.jpg";
 import interstellarImg from "./assets/interstellar.jpg";
+import batmanImg from "./assets/batman.jpg";
+import jockerImg from "./assets/jocker.jpg";
+import titanicImg from "./assets/titanic.jpg";
 
 // масив фільмів
 const movies = [
@@ -24,6 +27,7 @@ const movies = [
     rating: 8.5,
     price: 220,
     date: "2026-05-01",
+    hall: "Зал Vip",
     description: "Епічна науково-фантастична історія про планету Пандора, де людство намагається добути цінні ресурси, вступаючи в конфлікт із корінним народом На’ві. Фільм поєднує технологічний прогрес, природу та питання виживання цивілізацій."
   },
   {
@@ -33,6 +37,7 @@ const movies = [
     rating: 9.1,
     price: 250,
     date: "2026-04-15",
+    hall: "Зал Comfort",
     description: "Інтелектуальний трилер про крадіжку ідей через проникнення у сни. Команда спеціалістів занурюється у багаторівневу структуру підсвідомості, де межа між реальністю та сном поступово зникає."
   },
   {
@@ -42,33 +47,37 @@ const movies = [
     rating: 9.3,
     price: 270,
     date: "2026-05-10",
+    hall: 'Зал "Сімейний"',
     description: "Космічна одіссея про подорож крізь червоточину для пошуку нового дому для людства. Фільм досліджує теми часу, гравітації, любові та виживання цивілізації."
   },
   {
     id: 4,
     title: "Titanic",
-    img: avatarImg,
+    img: titanicImg,
     rating: 8.0,
     price: 180,
     date: "2026-03-20",
+    hall: "Зал Comfort",
     description: "Романтична історія на фоні трагедії легендарного лайнера Титанік. Кохання двох людей з різних соціальних світів розгортається на тлі катастрофи, яка змінює історію."
   },
   {
     id: 5,
     title: "Joker",
-    img: inceptionImg,
+    img: jockerImg,
     rating: 8.8,
     price: 230,
     date: "2026-02-11",
+    hall: "Зал Vip",
     description: "Психологічна драма про становлення Джокера — людини, яку суспільство ігнорує та відштовхує. Поступова трансформація в символ хаосу та анархії."
   },
   {
     id: 6,
     title: "The Batman",
-    img: interstellarImg,
-    rating: 8.7,
+    img: batmanImg,
+    rating: 9.7,
     price: 260,
     date: "2026-01-05",
+    hall: 'Зал "Сімейний"',
     description: "Темна історія про Бетмена на початку його кар’єри як захисника Ґотема. Він розслідує серію злочинів і стикається з корупцією та загадковими ворогами."
   }
 ];
@@ -178,148 +187,151 @@ function App() {
     setSelectedMovieDesc(movie);
     setShowDescription(true);
   };
+  
+  const currentMovie = movies.find(m => m.id === selectedMovieId);
 
-return (
-  <div className="App d-flex flex-column min-vh-100">
-    <Menu 
-      currentUser={currentUser}
-      onNavigate={setCurrentPage}
-      onLoginClick={() => setShowAuthModal(true)}
-      onLogout={handleLogout}
-    />
+  return (
+    <div className="App d-flex flex-column min-vh-100">
+      <Menu 
+        currentUser={currentUser}
+        onNavigate={setCurrentPage}
+        onLoginClick={() => setShowAuthModal(true)}
+        onLogout={handleLogout}
+      />
 
-    <main className="flex-grow-1">
-      <Container className="mt-4">
-        
-        {currentPage === "home" && (
-          <>
-            <div style={{ paddingTop: '70px' }}> 
-              <Alert variant="success" className="mb-3">
-                Вітаємо у системі бронювання кіно!
-              </Alert>
-              {/* Решта контенту */}
-            </div>
+      <main className="flex-grow-1">
+        <Container className="mt-4">
+          
+          {currentPage === "home" && (
+            <>
+              <div style={{ paddingTop: '70px' }}> 
+                <Alert variant="success" className="mb-3">
+                  Вітаємо у системі бронювання кіно!
+                </Alert>
+              </div>
 
-            <div className="d-flex justify-content-end align-items-center mb-3">
-              <span className="me-2 fw-bold">Відсортувати за:</span>
-              <select
-                className="form-select w-auto"
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-              >
-                <option value="new">Новизною</option>
-                <option value="old">Старизною</option>
-              </select>
-            </div>
+              <div className="d-flex justify-content-end align-items-center mb-3">
+                <span className="me-2 fw-bold">Відсортувати за:</span>
+                <select
+                  className="form-select w-auto"
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="new">Новизною</option>
+                  <option value="old">Старизною</option>
+                </select>
+              </div>
 
-            <div className="carousel-wrapper">
-              <button 
-                className="arrow-btn left" 
-                onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
-              >
-                ❮
-              </button>
+              <div className="carousel-wrapper">
+                <button 
+                  className="arrow-btn left" 
+                  onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
+                >
+                  ❮
+                </button>
 
-              <Row className="justify-content-center g-4">
-                {sortedMovies.slice(currentIndex, currentIndex + 4).map((movie) => (
-                  <Col md="auto" key={movie.id} className="mb-4">
-                    <MovieCard
-                      {...movie}
-                      onShowDescription={() => handleShowDescription(movie)}
-                      onBook={(title, id) => {
-                        setSelectedMovie(title);
-                        setSelectedMovieId(id);
-                        setShowSeats(true);
-                      }}
-                    />
-                  </Col>
-                ))}
-              </Row>
+                <Row className="justify-content-center g-4">
+                  {sortedMovies.slice(currentIndex, currentIndex + 4).map((movie) => (
+                    <Col md="auto" key={movie.id} className="mb-4">
+                      <MovieCard
+                        {...movie}
+                        onShowDescription={() => handleShowDescription(movie)}
+                        onBook={(title, id) => {
+                          setSelectedMovie(title);
+                          setSelectedMovieId(id);
+                          setShowSeats(true);
+                        }}
+                      />
+                    </Col>
+                  ))}
+                </Row>
 
-              <button 
-                className="arrow-btn right" 
-                onClick={() => setCurrentIndex(prev => Math.min(prev + 1, sortedMovies.length - 4))}
-              >
-                ❯
-              </button>
-            </div>
-          </>
-        )}
+                <button 
+                  className="arrow-btn right" 
+                  onClick={() => setCurrentIndex(prev => Math.min(prev + 1, sortedMovies.length - 4))}
+                >
+                  ❯
+                </button>
+              </div>
+            </>
+          )}
 
-          {currentPage === "watchlist" && (
-            <WatchlistPage
-              movies={movies}                   
-              onBook={(title, id) => {
-                setSelectedMovie(title);
-                setSelectedMovieId(id);
-                setShowSeats(true);
-              }}
+            {currentPage === "watchlist" && (
+              <WatchlistPage
+                movies={movies}                   
+                onBook={(title, id) => {
+                  setSelectedMovie(title);
+                  setSelectedMovieId(id);
+                  setShowSeats(true);
+                }}
+              />
+            )}
+          {currentPage === "contacts" && (
+            <Contacts
+              phone="+380991562666"
+              email="heitota@gmail.com"
+              address="м. Івано-Франківськ"
             />
           )}
-        {currentPage === "contacts" && (
-          <Contacts
-            phone="+380991562666"
-            email="heitota@gmail.com"
-            address="м. Івано-Франківськ"
+
+          {currentPage === "about" && <AboutCinema />}
+
+          {/* Модальні вікна */}
+          <Modal
+            show={showDescription}
+            onHide={() => setShowDescription(false)}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{selectedMovieDesc?.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>{selectedMovieDesc?.description}</p>
+              <strong>Рейтинг:</strong> {selectedMovieDesc?.rating}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDescription(false)}>
+                Закрити
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal 
+            show={showSeats} 
+            onHide={() => setShowSeats(false)} 
+            size="xl" 
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Бронювання квитків — {selectedMovie}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+             <SeatPicker 
+                onBook={handleSeatBook} 
+                movieId={selectedMovieId} 
+                // Знаходимо назву залу у твоєму масиві фільмів
+                hallName={movies.find(m => m.id === selectedMovieId)?.hall}
+                maxSeats={6}
+              />
+            </Modal.Body>
+          </Modal>
+
+          <AuthModal 
+            show={showAuthModal} 
+            onHide={() => setShowAuthModal(false)} 
+            onLoginSuccess={handleLoginSuccess} 
           />
-        )}
 
-        {currentPage === "about" && <AboutCinema />}
+        </Container>
+      </main>
 
-        {/* Модальні вікна */}
-        <Modal
-          show={showDescription}
-          onHide={() => setShowDescription(false)}
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedMovieDesc?.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>{selectedMovieDesc?.description}</p>
-            <strong>Рейтинг:</strong> {selectedMovieDesc?.rating}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDescription(false)}>
-              Закрити
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal 
-          show={showSeats} 
-          onHide={() => setShowSeats(false)} 
-          size="xl" 
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Бронювання квитків — {selectedMovie}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <SeatPicker 
-              onBook={handleSeatBook} 
-              movieId={selectedMovieId} 
-              maxSeats={6}
-            />
-          </Modal.Body>
-        </Modal>
-
-        <AuthModal 
-          show={showAuthModal} 
-          onHide={() => setShowAuthModal(false)} 
-          onLoginSuccess={handleLoginSuccess} 
-        />
-
-      </Container>
-    </main>
-
-    <footer className="bg-dark text-light text-center p-4 mt-5">
-      <h4>Про нас</h4>
-      <p>NeoCinema — сучасна система бронювання квитків у кінотеатр.</p>
-      <p className="mb-0">© 2026 CinemaBooking</p>
-    </footer>
-  </div>
-);
-}
-
-export default App;
+      <footer className="bg-dark text-light text-center p-4 mt-5">
+        <h4>Про нас</h4>
+        <p>NeoCinema — сучасна система бронювання квитків у кінотеатр.</p>
+        <p className="mb-0">© 2026 NeoCinema</p>
+      </footer>
+    </div>
+  );
+  }
+  
+  export default App;

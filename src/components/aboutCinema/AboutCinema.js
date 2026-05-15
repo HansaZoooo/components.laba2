@@ -5,7 +5,7 @@ import cinemaImg from "../../assets/neocinema.jpg";
 const AboutCinema = () => {
   return (
     <Container className="my-5">
-      <h1 className="text-center mb-5 display-4">Про кінотеатр NeoCinema</h1>
+      <h1 className="text-center pt-5 mt-5 mb-5 display-4">Про кінотеатр NeoCinema</h1>
       
       <Row className="align-items-center mb-5">
         <Col md={6}>
@@ -23,7 +23,7 @@ const AboutCinema = () => {
           </p>
           <p>
             Ми розташовані на 3-му поверсі ТРЦ <strong>"A7"</strong> і пропонуємо 
-            <strong>3 сучасних зали </strong> загальною місткістю <strong>580 місць</strong>.
+            <strong> 3 сучасних зали </strong> загальною місткістю <strong>580 місць</strong>.
           </p>
         </Col>
       </Row>
